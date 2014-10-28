@@ -50,6 +50,7 @@ function vopros_post_type()
 	register_post_type( 'vopros', $args );
 }
 
+include('options-page.php');
 include('vopros-block.php');
 include('otvet-block.php');
 ?>

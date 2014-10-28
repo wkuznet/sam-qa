@@ -15,7 +15,9 @@ function vopros_inner_custom_box()
 	global $post;
 	
 	$vopros_meta_string = get_post_meta( $post->ID, 'sam_qa-vopros_data', true );
-	if( !empty( $vopros_meta_string ) ) {
+	
+	if ( !empty( $vopros_meta_string ) ) 
+	{
 		
 		$vopros_meta_array = json_decode( $vopros_meta_string, true );
 		//print_r( $vopros_meta_array );
@@ -34,7 +36,7 @@ function vopros_inner_custom_box()
 		</td>
 		<td>
 			<label for="vopros_datetime">Дата</label><br>
-			<input type="text" id="vopros_datetime" name="vopros_datetime" value="<?php echo $vopros_meta_array['voprosdate']; ?>">
+			<input type="text" id="vopros_datetime" name="vopros_datetime" value="<?php echo $vopros_meta_array['voprosdate'] ? $vopros_meta_array['voprosdate'] : date( 'd.m.Y' ); ?>" readonly>
 		</td>
 	</tr>
 </table>
@@ -49,7 +51,6 @@ function vopros_inner_custom_box()
 	});
 </script>
 <?php
-print_r( $_POST );
 }
 
 /* Сохраняем данные, когда пост сохраняется */
@@ -64,9 +65,11 @@ function vopros_save_postdata( $post_id )
 		return $post_id;
 
 	// проверяем разрешено ли пользователю указывать эти данные
-	if ( 'page' == $_POST['vopros'] && ! current_user_can( 'edit_page', $post_id ) ) {
-		  return $post_id;
-	} elseif( ! current_user_can( 'edit_post', $post_id ) ) {
+	if ( 'page' == $_POST['vopros'] && ! current_user_can( 'edit_page', $post_id ) ) 
+	{
+		return $post_id;
+	} elseif( ! current_user_can( 'edit_post', $post_id ) ) 
+	{
 		return $post_id;
 	}
 
