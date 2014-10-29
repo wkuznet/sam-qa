@@ -8,6 +8,7 @@ function sam_qa_menu()
 add_action( 'admin_menu', 'sam_qa_menu' );
 function sam_qa_callback() 
 {
+add_option( 'sam_qa_mailto', get_bloginfo( 'admin_email' ) );
 ?>
 <div class="wrap">
 	<h2>Настройки плагина Вопросы-Ответы </h2>
