@@ -1,10 +1,10 @@
 <?php
-
+/* Получаем имена зарегистрированных пользователей */
 function get_users_for_answer() 
 {
 	$users_args = array( 
 		'blog_id' => 1,
-		'fields' => array('ID', 'user_login', 'user_nicename')
+		'fields' => array('ID', 'display_name', 'user_nicename')
 		);
 	$result = get_users( $users_args );
 	
@@ -47,8 +47,8 @@ function otvet_inner_custom_box()
 					}
 					
 					foreach ( $users_array as $user ) 
-					{
-						$show_name = !empty( $user->display_name ) ? $user->display_name : $user->user_nicename;
+					{	
+						$show_name = $user->display_name ? $user->display_name : $user->user_nicename;
 						$selected = $current == $user->ID ? ' selected' : '';
 						echo '<option value="' . $user->ID . '"' . $selected . '>' . $show_name . '</option>';
 					}
@@ -97,9 +97,10 @@ function otvet_save_postdata( $post_id )
 
 	// Все ОК. Теперь, нужно найти и сохранить данные
 	// Очищаем значение поля input.
-	$otvet_array['otvetname'] = sanitize_text_field( $_POST['otvet_username'] );
-	$otvet_array['otvetdate'] = sanitize_text_field( $_POST['otvet_datetime'] );
-	$otvet_array['otvettext'] = sanitize_text_field( $_POST['otvet_text_otvet'] );
+    $post_array_otvet = filter_var_array($_POST, FILTER_SANITIZE_STRING);
+	$otvet_array['otvetname'] = $post_array_otvet['otvet_username'];
+	$otvet_array['otvetdate'] = $post_array_otvet['otvet_datetime'];
+	$otvet_array['otvettext'] = $post_array_otvet['otvet_text_otvet'];
 	
 	$otvet_data = json_encode( $otvet_array, JSON_UNESCAPED_UNICODE );
 	// Обновляем данные в базе данных.

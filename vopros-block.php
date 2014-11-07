@@ -79,15 +79,15 @@ function vopros_save_postdata( $post_id )
 
 	// Все ОК. Теперь, нужно найти и сохранить данные
 	// Очищаем значение поля input.
-	$post_array = filter_var_array($_POST, FILTER_SANITIZE_STRING);
-	$vopros_array['username'] = $post_array['vopros_username'];
-	$vopros_array['useremail'] = $post_array['vopros_useremail'];
-	$vopros_array['voprosdate'] = $post_array['vopros_datetime'];
-	$vopros_array['voprostext'] = $post_array['vopros_text_vopros'];
-	
-	$vopros_data = json_encode( $vopros_array, JSON_UNESCAPED_UNICODE );
-
-	// Обновляем данные в базе данных.
-	update_post_meta( $post_id, 'sam_qa-vopros_data', $vopros_data );
+	$post_array_vopros = filter_var_array($_POST, FILTER_SANITIZE_STRING);
+    
+    $vopros_array = array(
+        'username' => $post_array_vopros['vopros_username'],
+        'useremail' => $post_array_vopros['vopros_useremail'],
+        'voprosdate' => $post_array_vopros['vopros_datetime'],
+        'voprostext' => $post_array_vopros['vopros_text_vopros']
+    );
+    add_vopros_data( $post_id, $vopros_array );
+    
 }
 add_action( 'save_post', 'vopros_save_postdata' );
